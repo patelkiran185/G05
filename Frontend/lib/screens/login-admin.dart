@@ -34,7 +34,7 @@ class LoginAdminScreen extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Add your admin login logic here
+         
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => HomeAdminScreen()),

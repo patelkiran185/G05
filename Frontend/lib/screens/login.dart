@@ -27,22 +27,16 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     try {
-      print('Debug: Sending POST request to the server'); // Debug statement
       final response = await http.post(
         Uri.parse('${dotenv.env['SERVER_URL']}/verify'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'rollnumber': rollNumber}),
       );
 
-      print('Debug: Response status code: ${response.statusCode}'); // Debug statement
-      print('Debug: Response body: ${response.body}'); // Debug statement
-
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        print('Debug: Response data: $responseData'); // Debug statement
 
         if (responseData['status'] == 'success') {
-          // Save login state
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setBool('isLoggedIn', true);
 
@@ -57,11 +51,11 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       } else {
         setState(() {
-          _message = 'Server error. Please try again later.';
+          _message = 'Invalid. Please try again later.';
         });
       }
     } catch (error) {
-      print('Debug: Exception caught: $error'); // Debug statement
+      print('Debug: Exception caught: $error');
       setState(() {
         _message = 'Error connecting to the server.';
       });
@@ -77,9 +71,12 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'Login',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+           
+            const SizedBox(height: 90),
+            Image.asset(
+              'assets/images/kmit-bar.png',
+              height: 100,
+              fit: BoxFit.contain,
             ),
             const SizedBox(height: 40),
             TextField(
