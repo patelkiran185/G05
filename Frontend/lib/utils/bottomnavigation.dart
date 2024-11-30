@@ -14,14 +14,12 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
 
- 
   static final List<Widget> _screens = <Widget>[
     const HomeScreen(),
     const CartScreen(),
     const ReorderScreen(),
     const SettingsScreen(),
   ];
-
 
   void _onItemTapped(int index) {
     setState(() {
