@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 import '../utils/bottomnavigation.dart';
 
@@ -144,10 +145,13 @@ class _HomeScreenState extends State<HomeScreen> {
         false;
   }
 
- void _logout() {
+void _logout() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('isLoggedIn');
+
   Navigator.pushAndRemoveUntil(
     context,
-    MaterialPageRoute(builder: (context) => const MyApp()),
+    MaterialPageRoute(builder: (context) => const MyHomePage()),
     (Route<dynamic> route) => false,
   );
 }

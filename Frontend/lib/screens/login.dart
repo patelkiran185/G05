@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'homescreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,12 +17,9 @@ class _LoginScreenState extends State<LoginScreen> {
   String _message = '';
 
   Future<void> _verifyRollNumber(BuildContext context) async {
-    String rollNumber = _rollNumberController.text.toUpperCase(); 
-
-   
+    String rollNumber = _rollNumberController.text.toUpperCase();
 
     if (rollNumber.isEmpty) {
-    
       setState(() {
         _message = 'Roll number is required';
       });
@@ -28,40 +27,41 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     try {
-  
+      print('Debug: Sending POST request to the server'); // Debug statement
       final response = await http.post(
-        Uri.parse('http://192.168.68.198:3000/verify'),
+        Uri.parse('${dotenv.env['SERVER_URL']}/verify'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'rollnumber': rollNumber}),
       );
 
-  
+      print('Debug: Response status code: ${response.statusCode}'); // Debug statement
+      print('Debug: Response body: ${response.body}'); // Debug statement
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-      
+        print('Debug: Response data: $responseData'); // Debug statement
 
         if (responseData['status'] == 'success') {
-        
-         
+          // Save login state
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setBool('isLoggedIn', true);
+
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const HomeScreen()),
           );
         } else {
-        
           setState(() {
             _message = responseData['message'];
           });
         }
       } else {
-      
         setState(() {
           _message = 'Server error. Please try again later.';
         });
       }
     } catch (error) {
-    
+      print('Debug: Exception caught: $error'); // Debug statement
       setState(() {
         _message = 'Error connecting to the server.';
       });
@@ -95,7 +95,6 @@ class _LoginScreenState extends State<LoginScreen> {
               width: 150,
               child: ElevatedButton(
                 onPressed: () {
-                 
                   _verifyRollNumber(context);
                 },
                 style: ElevatedButton.styleFrom(
