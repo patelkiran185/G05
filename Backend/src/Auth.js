@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
+const cors = require('cors');
+app.use(cors());
 
 app.use(bodyParser.json());
 
@@ -19,9 +21,8 @@ mongoose.connect('mongodb+srv://nikhil:teja12@database.riapn.mongodb.net/Canteen
 
 // Middleware to parse JSON bodies
 app.use(express.json());
-
-app.get('/verify-user-roll-number', async (req, res) => {
-    const { rollnumber } = req.body;
+app.post('/verify', async (req, res) => {
+    const { rollnumber } = req.body; // Extract from request body
 
     if (!rollnumber) {
         return res.status(400).json({ status: 'failure', message: 'Roll number is required' });
@@ -41,6 +42,7 @@ app.get('/verify-user-roll-number', async (req, res) => {
         res.status(500).json({ status: 'error', message: 'An error occurred while checking the roll number in users collection' });
     }
 });
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;

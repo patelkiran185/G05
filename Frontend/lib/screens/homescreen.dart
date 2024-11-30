@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 import '../utils/bottomnavigation.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -143,6 +144,14 @@ class _HomeScreenState extends State<HomeScreen> {
         false;
   }
 
+ void _logout() {
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(builder: (context) => const MyApp()),
+    (Route<dynamic> route) => false,
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -156,6 +165,12 @@ class _HomeScreenState extends State<HomeScreen> {
             'Welcome!',
             style: TextStyle(color: Colors.black),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout, color: Colors.black),
+              onPressed: _logout,
+            ),
+          ],
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
