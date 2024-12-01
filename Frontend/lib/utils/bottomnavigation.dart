@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../screens/homescreen.dart';
-import '../screens/cart.dart';
+import '../screens/cart.dart' as cart_screen;
 import '../screens/reorder.dart';
-import '../screens/settings.dart';
+import '../screens/settings.dart' as settings_screen;
 
 class BottomNavigation extends StatefulWidget {
   final List<Map<String, dynamic>> cart;
@@ -23,9 +23,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
     super.initState();
     _screens = <Widget>[
       HomeScreen(cart: widget.cart),
-      CartScreen(cart: widget.cart),
+      cart_screen.CartScreen(cart: widget.cart),
       ReorderScreen(cart: widget.cart),
-      SettingsScreen(cart: widget.cart),
+      settings_screen.SettingsScreen(), // Use SettingsScreen here
     ];
   }
 
