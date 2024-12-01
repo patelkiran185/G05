@@ -5,7 +5,9 @@ import '../screens/reorder.dart';
 import '../screens/settings.dart';
 
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({Key? key}) : super(key: key);
+  final List<Map<String, dynamic>> cart;
+
+  const BottomNavigation({Key? key, required this.cart}) : super(key: key);
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
@@ -14,12 +16,18 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
 
-  static final List<Widget> _screens = <Widget>[
-    const HomeScreen(),
-    const CartScreen(),
-    const ReorderScreen(),
-    const SettingsScreen(),
-  ];
+  late List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = <Widget>[
+      HomeScreen(cart: widget.cart),
+      CartScreen(cart: widget.cart),
+      ReorderScreen(cart: widget.cart),
+      SettingsScreen(cart: widget.cart),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -45,7 +53,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           label: 'Cart',
         ),
         BottomNavigationBarItem(
-          icon: Icon(IconData(0xe532, fontFamily: 'MaterialIcons')),
+          icon: Icon(Icons.reorder),
           label: 'Reorder',
         ),
         BottomNavigationBarItem(
@@ -56,8 +64,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
       currentIndex: _selectedIndex,
       selectedItemColor: Colors.green,
       unselectedItemColor: Colors.grey,
-      selectedLabelStyle: TextStyle(color: Colors.green),
-      unselectedLabelStyle: TextStyle(color: Colors.grey),
+      selectedLabelStyle: const TextStyle(color: Colors.green),
+      unselectedLabelStyle: const TextStyle(color: Colors.grey),
       showSelectedLabels: true,
       showUnselectedLabels: true,
       onTap: _onItemTapped,

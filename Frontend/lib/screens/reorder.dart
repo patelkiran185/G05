@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../utils/bottomnavigation.dart';
 
 class ReorderScreen extends StatelessWidget {
-  const ReorderScreen({Key? key}) : super(key: key);
+  const ReorderScreen({Key? key, required List<Map<String, dynamic>> cart}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class ReorderScreen extends StatelessWidget {
           style: TextStyle(fontSize: 24),
         ),
       ),
-      bottomNavigationBar: const BottomNavigation(),
+      bottomNavigationBar: const BottomNavigation(cart: [],),
     );
   }
 }

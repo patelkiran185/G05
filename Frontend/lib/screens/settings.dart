@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../utils/bottomnavigation.dart';
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({Key? key, required List<Map<String, dynamic>> cart}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class SettingsScreen extends StatelessWidget {
           style: TextStyle(fontSize: 24),
         ),
       ),
-      bottomNavigationBar: const BottomNavigation(),
+      bottomNavigationBar: const BottomNavigation(cart: [],),
     );
   }
 }

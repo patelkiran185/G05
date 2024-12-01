@@ -2,48 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 import '../utils/bottomnavigation.dart';
+import 'cart.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final List<Map<String, dynamic>> cart;
+
+  const HomeScreen({Key? key, required this.cart}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final Map<String, List<Map<String, String>>> foodCategories = {
+  final Map<String, List<Map<String, dynamic>>> foodCategories = {
     'Breakfast': [
-      {'image': 'assets/images/Idli.jpeg', 'name': 'Idli'},
-      {'image': 'assets/images/Idli Sambhar.jpeg', 'name': 'Idli Sambhar'},
-      {'image': 'assets/images/Sambar Dosa.jpeg', 'name': 'Sambar Dosa'},
-      {'image': 'assets/images/Vada Puri.jpeg', 'name': 'Vada Puri'},
-      {'image': 'assets/images/Tea.jpeg', 'name': 'Tea'},
-      {'image': 'assets/images/Coffee.jpeg', 'name': 'Coffee'},
+      {'image': 'assets/images/Idli.jpeg', 'name': 'Idli', 'price': 25},
+      {'image': 'assets/images/Idli Sambhar.jpeg', 'name': 'Idli Sambhar', 'price': 30},
+      {'image': 'assets/images/Sambar Dosa.jpeg', 'name': 'Sambar Dosa', 'price': 50},
+      {'image': 'assets/images/Vada Puri.jpeg', 'name': 'Vada Puri', 'price': 25},
+      {'image': 'assets/images/Tea.jpeg', 'name': 'Tea', 'price': 8},
+      {'image': 'assets/images/Coffee.jpeg', 'name': 'Coffee', 'price': 10},
     ],
     'Snacks': [
-      {'image': 'assets/images/Samosa.jpeg', 'name': 'Samosa'},
-      {'image': 'assets/images/Puff.jpeg', 'name': 'Puff'},
-      {'image': 'assets/images/Spring Roll.jpeg', 'name': 'Spring Roll'},
-      {'image': 'assets/images/Manchuria.jpeg', 'name': 'Manchuria'},
-      {'image': 'assets/images/Gobi 65.jpeg', 'name': 'Gobi 65'},
+      {'image': 'assets/images/Samosa.jpeg', 'name': 'Samosa', 'price': 10},
+      {'image': 'assets/images/Puff.jpeg', 'name': 'Puff', 'price': 15},
+      {'image': 'assets/images/Spring Roll.jpeg', 'name': 'Spring Roll', 'price': 45},
+      {'image': 'assets/images/Manchuria.jpeg', 'name': 'Manchuria', 'price': 50},
+      {'image': 'assets/images/Gobi 65.jpeg', 'name': 'Gobi 65', 'price': 70},
     ],
     'Meals': [
-      {'image': 'assets/images/Chapati Meals.jpeg', 'name': 'Chapati Meals'},
-      {'image': 'assets/images/Fried Rice.jpeg', 'name': 'Fried Rice'},
-      {'image': 'assets/images/Veg Biriyani.jpeg', 'name': 'Veg Biriyani'},
-      {'image': 'assets/images/Paneer Fride Rice.jpeg', 'name': 'Paneer Fried Rice'},
-      {'image': 'assets/images/Zeera Rice.jpeg', 'name': 'Jeera Rice'},
+      {'image': 'assets/images/Chapati Meals.jpeg', 'name': 'Chapati Meals', 'price': 30},
+      {'image': 'assets/images/Fried Rice.jpeg', 'name': 'Fried Rice', 'price': 35},
+      {'image': 'assets/images/Veg Biriyani.jpeg', 'name': 'Veg Biriyani', 'price': 50},
+      {'image': 'assets/images/Paneer Fride Rice.jpeg', 'name': 'Paneer Fried Rice', 'price': 60},
+      {'image': 'assets/images/Zeera Rice.jpeg', 'name': 'Jeera Rice', 'price': 40},
     ],
     'Other Dishes': [
-      {'image': 'assets/images/Noodles.jpeg', 'name': 'Noodles'},
-      {'image': 'assets/images/Chilli Paneer.jpeg', 'name': 'Chilli Paneer'},
-      {'image': 'assets/images/Paneer Noodles Mix.jpeg', 'name': 'Paneer Noodles Mix'},
-      {'image': 'assets/images/Shezwan Noodles Mix.jpeg', 'name': 'Shezwan Noodles Mix'},
-      {'image': 'assets/images/Pasta.jpeg', 'name': 'Pasta'},
+      {'image': 'assets/images/Noodles.jpeg', 'name': 'Noodles', 'price': 55},
+      {'image': 'assets/images/Chilli Paneer.jpeg', 'name': 'Chilli Paneer', 'price': 50},
+      {'image': 'assets/images/Paneer Noodles Mix.jpeg', 'name': 'Paneer Noodles Mix', 'price': 60},
+      {'image': 'assets/images/Shezwan Noodles Mix.jpeg', 'name': 'Shezwan Noodles Mix', 'price': 50},
+      {'image': 'assets/images/Pasta.jpeg', 'name': 'Pasta', 'price': 70},
     ],
   };
 
-  void _showProductDialog(BuildContext context, Map<String, String> item) {
+  void _addToCart(Map<String, dynamic> item, int quantity) {
+    setState(() {
+      widget.cart.add({'item': item, 'quantity': quantity});
+    });
+  }
+
+  void _showProductDialog(BuildContext context, Map<String, dynamic> item) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -51,16 +60,18 @@ class _HomeScreenState extends State<HomeScreen> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text(item['name']!),
+              title: Text(item['name']),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Image.asset(
-                    item['image']!,
+                    item['image'],
                     height: 200,
                     width: 200,
                     fit: BoxFit.cover,
                   ),
+                  const SizedBox(height: 10),
+                  Text('Price: ₹${item['price']}'),
                   const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -92,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 TextButton(
                   child: const Text('Add to Cart'),
                   onPressed: () {
+                    _addToCart(item, quantity);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -145,16 +157,24 @@ class _HomeScreenState extends State<HomeScreen> {
         false;
   }
 
-void _logout() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.remove('isLoggedIn');
+  void _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isLoggedIn');
 
-  Navigator.pushAndRemoveUntil(
-    context,
-    MaterialPageRoute(builder: (context) => const MyHomePage()),
-    (Route<dynamic> route) => false,
-  );
-}
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const MyHomePage()),
+      (Route<dynamic> route) => false,
+    );
+  }
+
+  final List<Map<String, String>> commonFoods = [
+    {'image': 'assets/images/Idli.jpeg', 'name': 'Idli'},
+    {'image': 'assets/images/Samosa.jpeg', 'name': 'Samosa'},
+    {'image': 'assets/images/Fried Rice.jpeg', 'name': 'Fried Rice'},
+    {'image': 'assets/images/Noodles.jpeg', 'name': 'Noodles'},
+    {'image': 'assets/images/Tea.jpeg', 'name': 'Tea'},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -174,6 +194,7 @@ void _logout() async {
               icon: const Icon(Icons.logout, color: Colors.black),
               onPressed: _logout,
             ),
+          
           ],
         ),
         body: Column(
@@ -250,7 +271,7 @@ void _logout() async {
             ),
           ],
         ),
-        bottomNavigationBar: const BottomNavigation(),
+        bottomNavigationBar: BottomNavigation(cart: widget.cart),
       ),
     );
   }
@@ -258,8 +279,8 @@ void _logout() async {
 
 class CategoryDetailScreen extends StatelessWidget {
   final String category;
-  final List<Map<String, String>> items;
-  final Function(BuildContext, Map<String, String>) onItemTap;
+  final List<Map<String, dynamic>> items;
+  final Function(BuildContext, Map<String, dynamic>) onItemTap;
 
   const CategoryDetailScreen({
     Key? key,
@@ -306,6 +327,14 @@ class CategoryDetailScreen extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  '₹${item['price']}',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
                   ),
                   textAlign: TextAlign.center,
                 ),

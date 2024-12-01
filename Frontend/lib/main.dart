@@ -51,7 +51,7 @@ class MyHomePage extends StatelessWidget {
         } else {
           bool isLoggedIn = snapshot.data ?? false;
           if (isLoggedIn) {
-            return const HomeScreen();
+            return const HomeScreen(cart: [],);
           } else {
             return Scaffold(
               backgroundColor: Colors.white,
