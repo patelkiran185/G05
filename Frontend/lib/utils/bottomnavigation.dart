@@ -25,7 +25,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       HomeScreen(cart: widget.cart),
       cart_screen.CartScreen(cart: widget.cart),
       ReorderScreen(cart: widget.cart),
-      settings_screen.SettingsScreen(), // Use SettingsScreen here
+      settings_screen.SettingsScreen(), 
     ];
   }
 

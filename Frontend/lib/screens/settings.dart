@@ -102,23 +102,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
 
               // Veg Mode Switch
-              ListTile(
-                leading: const Icon(Icons.eco),
-                title: const Text('Veg Mode'),
-                trailing: Switch(
-                  value: isVegMode,
-                  onChanged: (value) {
-                    setState(() {
-                      isVegMode = value;
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(isVegMode ? 'Veg Mode Enabled' : 'Veg Mode Disabled'),
-                      ),
-                    );
-                  },
-                ),
-              ),
+              // ListTile(
+              //   leading: const Icon(Icons.eco),
+              //   title: const Text('Veg Mode'),
+              //   trailing: Switch(
+              //     value: isVegMode,
+              //     onChanged: (value) {
+              //       setState(() {
+              //         isVegMode = value;
+              //       });
+              //       ScaffoldMessenger.of(context).showSnackBar(
+              //         SnackBar(
+              //           content: Text(isVegMode ? 'Veg Mode Enabled' : 'Veg Mode Disabled'),
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
 
               // Appearance
               ListTile(
